@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --jp-font: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+  --en-font: 'Inter', system-ui, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--en-font);
+  background-color: #0d1117;
+  color: #e6edf3;
+}
+
+.jp-text {
+  font-family: var(--jp-font);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+
+/* Karaoke Active Lyric Line Animation */
+.lyric-line {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border-radius: 0.75rem;
+  padding: 0.65rem 1rem;
+}
+
+.lyric-line:hover {
+  background-color: rgba(99, 102, 241, 0.08);
+}
+
+.lyric-line:hover .time-badge::before {
+  content: "▶ ";
+  color: #818cf8;
+  font-size: 9px;
+  margin-right: 1px;
+}
+
+.lyric-line.active {
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.08));
+  border-left: 4px solid #818cf8;
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.25);
+}
+
+.lyric-line.active .jp-lyric {
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 0 16px rgba(129, 140, 248, 0.5);
+}
+
+.lyric-line.active .trans-lyric {
+  color: #c7d2fe;
+  font-weight: 500;
+}
+
+.lyric-line.selected {
+  background: rgba(99, 102, 241, 0.12);
+  border-left: 4px solid #a855f7;
+}
+
+.lyric-line .btn-ask-ai {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.92);
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lyric-line:hover .btn-ask-ai,
+.lyric-line.selected .btn-ask-ai,
+.lyric-line.active .btn-ask-ai {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* Flash animation when text is pasted to chat input */
+@keyframes flashGlow {
+  0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.8); }
+  50% { box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.2); }
+  100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+}
+
+.input-flash {
+  animation: flashGlow 0.7s ease-out;
+  border-color: #818cf8 !important;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -90%) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%) scale(1);
+  }
+}
+
+/* Markdown styling in AI Response */
+.markdown-body {
+  font-size: 0.975rem;
+  line-height: 1.82;
+  color: #d1d5db;
+}
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+  color: #f1f5f9;
+  font-weight: 700;
+  margin-top: 1.25rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.markdown-body h2 {
+  font-size: 1.15rem;
+  color: #c7d2fe;
+}
+.markdown-body h3 {
+  font-size: 1.05rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.35rem;
+  color: #e0e7ff;
+}
+.markdown-body p {
+  margin-bottom: 0.85rem;
+}
+.markdown-body strong {
+  color: #a5b4fc;
+  font-weight: 600;
+}
+.markdown-body ul, .markdown-body ol {
+  padding-left: 1.35rem;
+  margin: 0.75rem 0;
+}
+.markdown-body ul {
+  list-style-type: disc;
+}
+.markdown-body ol {
+  list-style-type: decimal;
+}
+.markdown-body li {
+  margin-bottom: 0.45rem;
+}
+.markdown-body code {
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(129, 140, 248, 0.2);
+  padding: 0.18rem 0.42rem;
+  border-radius: 0.35rem;
+  font-size: 0.88em;
+  color: #f472b6;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+.markdown-body pre {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  margin: 0.85rem 0;
+}
+.markdown-body blockquote {
+  border-left: 3.5px solid #818cf8;
+  padding: 0.6rem 0.9rem;
+  color: #cbd5e1;
+  margin: 0.85rem 0;
+  background: rgba(99, 102, 241, 0.06);
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.92rem;
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: 0.6rem;
+  overflow: hidden;
+}
+.markdown-body th, .markdown-body td {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.55rem 0.8rem;
+  text-align: left;
+}
+.markdown-body th {
+  background: rgba(99, 102, 241, 0.18);
+  color: #e0e7ff;
+  font-weight: 600;
+}
+.markdown-body tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.jp-lyric {
+  font-size: 1.05rem;
+  letter-spacing: 0.025em;
+}
+.trans-lyric {
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+/* Glassmorphism Cards */
+.glass-panel {
+  background: rgba(22, 27, 34, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
