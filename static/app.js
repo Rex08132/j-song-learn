@@ -28,8 +28,21 @@ const state = {
   lastQueryType: 'grammar',
   apiKey: localStorage.getItem('GEMINI_API_KEY') || '',
   model: localStorage.getItem('GEMINI_MODEL') || 'gemini-2.5-flash',
+  customPrompt: localStorage.getItem('GEMINI_CUSTOM_PROMPT') || '',
   library: [],
   notes: []
+};
+
+const DEFAULT_PERSONA_PROMPT = `你是一位精通日語教學、語法分析與 J-POP 歌詞賞析的頂級日語家教老師。
+你的目標是以親切、專業、結構清晰的【繁體中文】向日語學習者（程度約在 N4~N1）解釋歌詞中的日文。`;
+
+const PROMPT_PRESETS = {
+  'gentle': `你是一位溫柔親切、充滿耐心且鼓勵學生的日語家教老師。
+請多用溫暖活潑的語氣，以淺顯易懂的繁體中文說明，並給予學習者滿滿的讚賞與鼓勵！`,
+  'strict': `你是一位專攻 JLPT 日檢（N1/N2）的資深專業日語教授。
+請以嚴謹、精準且具學術深度的方式拆解語法結構、文語古語源流、近義句型對比與文體層次。`,
+  'culture': `你是一位對日本流行文化、J-POP 樂壇歷史、次文化與動漫深度熱愛的音樂日語嚮導。
+在解析歌詞文法的同時，請特別著重於歌詞的押韻修辭、隱喻意境、作詞者的情感心境以及日本音樂文化背景。`
 };
 
 // Preset Songs for instant 1-click test
@@ -396,6 +409,7 @@ async function askGemini(type = 'grammar', customQuestion = '') {
   const payload = {
     apiKey: state.apiKey,
     model: state.model || 'gemini-2.5-flash',
+    customPrompt: state.customPrompt || '',
     songTitle: state.currentSong.title,
     artist: state.currentSong.artist,
     selectedText: state.selectedText || customQuestion,
@@ -925,20 +939,44 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-open-settings')?.addEventListener('click', () => {
     const input = document.getElementById('input-api-key');
     const select = document.getElementById('select-model');
+    const promptInput = document.getElementById('input-custom-prompt');
     if (input) input.value = state.apiKey;
     if (select) select.value = state.model || 'gemini-2.5-flash';
+    if (promptInput) promptInput.value = state.customPrompt || DEFAULT_PERSONA_PROMPT;
     toggleModal('modal-settings', true);
+  });
+
+  // Prompt Preset Badges
+  document.querySelectorAll('.prompt-preset-badge').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const styleKey = btn.dataset.style;
+      const promptInput = document.getElementById('input-custom-prompt');
+      if (promptInput && PROMPT_PRESETS[styleKey]) {
+        promptInput.value = PROMPT_PRESETS[styleKey];
+      }
+    });
+  });
+
+  // Reset Prompt Button
+  document.getElementById('btn-reset-prompt')?.addEventListener('click', () => {
+    const promptInput = document.getElementById('input-custom-prompt');
+    if (promptInput) {
+      promptInput.value = DEFAULT_PERSONA_PROMPT;
+    }
   });
 
   document.getElementById('btn-save-api-key')?.addEventListener('click', () => {
     const input = document.getElementById('input-api-key');
     const select = document.getElementById('select-model');
+    const promptInput = document.getElementById('input-custom-prompt');
     state.apiKey = input ? input.value.trim() : '';
     state.model = select ? select.value : 'gemini-2.5-flash';
+    state.customPrompt = promptInput ? promptInput.value.trim() : '';
     localStorage.setItem('GEMINI_API_KEY', state.apiKey);
     localStorage.setItem('GEMINI_MODEL', state.model);
+    localStorage.setItem('GEMINI_CUSTOM_PROMPT', state.customPrompt);
     toggleModal('modal-settings', false);
-    alert('Gemini API Key 與模型設定已成功儲存！');
+    alert('Gemini API Key、模型與自訂人設已成功儲存！');
   });
 
   document.getElementById('btn-open-notes')?.addEventListener('click', () => {
