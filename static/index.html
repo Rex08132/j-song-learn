@@ -328,6 +328,23 @@
         </select>
       </div>
 
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-semibold text-slate-300">AI 老師人設與風格 (可自訂)</label>
+          <button id="btn-reset-prompt" type="button" class="text-[11px] text-brand-400 hover:text-brand-300 transition">恢復預設人設</button>
+        </div>
+        <textarea id="input-custom-prompt" rows="4" 
+                  placeholder="可自由自訂 AI 老師個性或教學偏好，例如：請扮演親切溫柔的日語家教..." 
+                  class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 font-sans leading-relaxed"></textarea>
+        <!-- Quick Preset Badges -->
+        <div class="flex flex-wrap gap-1.5 pt-1">
+          <span class="text-[11px] text-slate-400">快速風格：</span>
+          <button type="button" class="prompt-preset-badge px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] transition" data-style="gentle">🌸 溫柔鼓勵家教</button>
+          <button type="button" class="prompt-preset-badge px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] transition" data-style="strict">🔥 專業 N1 考證</button>
+          <button type="button" class="prompt-preset-badge px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] transition" data-style="culture">🎸 J-POP 音樂文化狂熱</button>
+        </div>
+      </div>
+
       <div class="flex items-center justify-between pt-2">
         <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-xs text-brand-400 hover:underline flex items-center space-x-1">
           <span>取得免費 API Key</span>
@@ -338,7 +355,7 @@
             取消
           </button>
           <button id="btn-save-api-key" class="px-4 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-xs text-white font-medium shadow">
-            儲存金鑰
+            儲存設定
           </button>
         </div>
       </div>
