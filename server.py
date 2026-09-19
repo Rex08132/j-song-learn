@@ -380,6 +380,7 @@ def delete_note(note_id: str):
 class AIAskRequest(BaseModel):
     apiKey: Optional[str] = None
     model: Optional[str] = "gemini-2.5-flash"
+    customPrompt: Optional[str] = ""
     songTitle: str
     artist: Optional[str] = ""
     selectedText: str
@@ -423,8 +424,9 @@ def ask_gemini_tutor(req: AIAskRequest):
 「{req.customQuestion}」
 請圍繞該問題並結合歌詞上下文，給出詳細親切的解答。"""
 
-    system_prompt = f"""你是一位精通日語教學、語法分析與 J-POP 歌詞賞析的頂級日語家教老師。
-你的目標是以親切、專業、結構清晰的【繁體中文】向日語學習者（程度約在 N4~N1）解釋歌詞中的日文。
+    base_persona = req.customPrompt.strip() if req.customPrompt and req.customPrompt.strip() else "你是一位精通日語教學、語法分析與 J-POP 歌詞賞析的頂級日語家教老師。\n你的目標是以親切、專業、結構清晰的【繁體中文】向日語學習者（程度約在 N4~N1）解釋歌詞中的日文。"
+
+    system_prompt = f"""{base_persona}
 
 【當前學習資訊】
 - 歌曲名稱：《{req.songTitle}》{' / ' + req.artist if req.artist else ''}
