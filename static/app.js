@@ -946,23 +946,37 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleModal('modal-settings', true);
   });
 
+  // Global helper for prompt presets
+  window.selectPromptPreset = function(styleKey) {
+    const promptInput = document.getElementById('input-custom-prompt');
+    if (promptInput && PROMPT_PRESETS[styleKey]) {
+      promptInput.value = PROMPT_PRESETS[styleKey];
+      // Visual feedback: brief highlight animation
+      promptInput.classList.add('border-brand-400', 'bg-slate-900');
+      setTimeout(() => {
+        promptInput.classList.remove('border-brand-400', 'bg-slate-900');
+      }, 300);
+    }
+  };
+
+  window.resetPromptToDefault = function() {
+    const promptInput = document.getElementById('input-custom-prompt');
+    if (promptInput) {
+      promptInput.value = DEFAULT_PERSONA_PROMPT;
+    }
+  };
+
   // Prompt Preset Badges
   document.querySelectorAll('.prompt-preset-badge').forEach(btn => {
     btn.addEventListener('click', () => {
       const styleKey = btn.dataset.style;
-      const promptInput = document.getElementById('input-custom-prompt');
-      if (promptInput && PROMPT_PRESETS[styleKey]) {
-        promptInput.value = PROMPT_PRESETS[styleKey];
-      }
+      window.selectPromptPreset(styleKey);
     });
   });
 
   // Reset Prompt Button
   document.getElementById('btn-reset-prompt')?.addEventListener('click', () => {
-    const promptInput = document.getElementById('input-custom-prompt');
-    if (promptInput) {
-      promptInput.value = DEFAULT_PERSONA_PROMPT;
-    }
+    window.resetPromptToDefault();
   });
 
   document.getElementById('btn-save-api-key')?.addEventListener('click', () => {
